@@ -12,7 +12,7 @@ class UrlRedirectController extends Controller
 		private HashedUrlRepository $repository
 	) {}
 
-	public function index(string $hash, string $folder = null)
+	public function index(string $hash, ?string $folder = null)
 	{
 		$hashedUrl = $this->repository->findByHash($hash);
 		if ($hashedUrl && $hashedUrl->folder === $folder) {
