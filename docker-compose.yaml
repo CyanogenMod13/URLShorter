@@ -1,0 +1,41 @@
+version: "3"
+services:
+    mysql:
+        image: mysql:8
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_PASSWORD: pwd
+            MYSQL_USER: user
+            MYSQL_DATABASE: app
+        volumes:
+            - mysql-data:/var/lib/mysql
+        ports:
+            - "33061:3306"
+
+    php-fpm:
+        user: "1000:1000"
+        build:
+            context: docker/php
+        volumes:
+            - ./:/var/www
+
+    nginx:
+        build:
+            context: docker/nginx
+        volumes:
+            - ./:/var/www
+        ports:
+            - "8080:80"
+        depends_on:
+            - php-fpm
+
+    node:
+        user: "root:root"
+        image: node:17-alpine
+        volumes:
+            - ./:/var/www
+        working_dir: /var/www
+
+
+volumes:
+    mysql-data:
