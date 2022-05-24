@@ -12,23 +12,12 @@ class UrlRedirectController extends Controller
 		private HashedUrlRepository $repository
 	) {}
 
-	public function index(string $hash)
-	{
-		$hashedUrl = $this->repository->findByHash($hash);
-		if ($hashedUrl) {
-			return redirect($hashedUrl->originalUrl);
-		} else {
-			return redirect('/');
-		}
-	}
-
-	public function indexFolder(string $folder, string $hash)
+	public function index(string $hash, string $folder = null)
 	{
 		$hashedUrl = $this->repository->findByHash($hash);
 		if ($hashedUrl && $hashedUrl->folder === $folder) {
 			return redirect($hashedUrl->originalUrl);
-		} else {
-			return redirect('/');
 		}
+		return redirect('/');
 	}
 }
