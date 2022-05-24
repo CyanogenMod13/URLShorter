@@ -9,7 +9,8 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class CheckSafeUrlService
 {
-	private string $safeApi = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=";
+	private const GOOGLE_SAFE_API = "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=";
+
 	private array $requestBody = [
 		"client" => [
 			"clientId" => null,
@@ -31,8 +32,6 @@ class CheckSafeUrlService
 	{
 		$this->requestBody['client']['clientId'] = env('GOOGLE_SAFE_CLIENT_ID');
 		$this->requestBody['client']['clientVersion'] = env('GOOGLE_SAFE_CLIENT_VERSION');
-
-		$this->safeApi .= env('GOOGLE_API_KEY');
 	}
 
 	/**
@@ -40,8 +39,10 @@ class CheckSafeUrlService
 	 */
 	public function checkSafe(string $url): bool
 	{
+		$apiKey = env('GOOGLE_API_KEY');
+
 		$this->requestBody['threatInfo']['threatEntries']['url'] = $url;
-		$response = $this->client->post($this->safeApi, ['body' => json_encode($this->requestBody)]);
+		$response = $this->client->post(self::GOOGLE_SAFE_API . $apiKey, ['body' => json_encode($this->requestBody)]);
 		return $response->getBody()->getContents() === "{}\n";
 	}
 }
