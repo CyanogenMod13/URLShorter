@@ -17,7 +17,10 @@
 			</div>
 			<div v-if="shortUrl && !isLoading" class="text-center mt-2">
 				<div>Your link is:</div>
-				<a class="nav-link" :href="shortUrl">{{ shortUrl }}</a>
+				<a class="short-url" :href="shortUrl">{{ shortUrl }}</a>
+			</div>
+			<div v-else-if="error && !isLoading" class="text-center text-danger mt-2">
+				<div>{{ error }}</div>
 			</div>
 		</div>
 	</div>
@@ -40,6 +43,10 @@ export default {
 			axios.post('/api/generate-url', this.formData).then(response => {
 				this.shortUrl = response.data.shortUrl
 				this.isLoading = false
+			}).catch(reason => {
+				this.error = reason.response.data.error
+				this.isLoading = false
+				this.shortUrl = null
 			})
 		}
 	},
@@ -50,7 +57,8 @@ export default {
 				folder: null
 			},
 			shortUrl: null,
-			isLoading: false
+			isLoading: false,
+			error: null
 		}
 	}
 }
