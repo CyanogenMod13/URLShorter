@@ -20,13 +20,10 @@ class HashedUrl extends Model
 
 	public static function createHahsedUrl(string $originalUrl, string $hash, ?string $folder = null): HashedUrl
 	{
-		$attributes = [
+		return self::create([
 			'hash' => $hash,
-			'originalUrl' => $originalUrl
-		];
-		if ($folder) {
-			$attributes['folder'] = $folder;
-		}
-		return self::create($attributes);
+			'originalUrl' => $originalUrl,
+			'folder' => $folder
+		]);
 	}
 }
