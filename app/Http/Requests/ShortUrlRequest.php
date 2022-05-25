@@ -14,7 +14,7 @@ class ShortUrlRequest extends FormRequest
     {
         return [
             'originalUrl' => 'url|required',
-			'folder' => 'string|min:6|max:255|nullable'
+			'folder' => 'string|min:6|max:255|nullable|alpha_num'
         ];
     }
 }
