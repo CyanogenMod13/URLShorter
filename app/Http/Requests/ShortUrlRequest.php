@@ -13,8 +13,8 @@ class ShortUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'originalUrl' => 'string',
-			'folder' => 'string'
+            'originalUrl' => 'url|required',
+			'folder' => 'string|min:6|max:255|nullable'
         ];
     }
 }
