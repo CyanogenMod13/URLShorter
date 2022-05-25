@@ -11,28 +11,25 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class UrlShortGeneratorService
 {
-	private string $hostName;
-
 	public function __construct(
 		private HashedUrlRepository $repository,
 		private HashUrlService $hashUrlService,
-		private CheckSafeUrlService $checkSafeUrlService
-	) {
-		$this->hostName = env('APP_URL');
-	}
+		private CheckSafeUrlService $checkSafeUrlService,
+		private string $hostName
+	) {}
 
 	/**
 	 * @throws GuzzleException
 	 * @throws UrlUnsafeException
 	 */
-	public function generateShortUrl(string $originalUrl, string $folder = null): string
+	public function generateShortUrl(string $originalUrl, ?string $folder = null): string
 	{
 		if (!$this->checkSafeUrlService->checkSafe($originalUrl)) {
 			throw new UrlUnsafeException();
 		}
 
-		$hash = $this->hashUrlService->hash($originalUrl . ($folder ?? ''));
-		if (!$this->isHashStored($hash)) {
+		$hash = $this->hashUrlService->hash($originalUrl . ($folder ?: ''));
+		if (!$this->repository->isHashExists($hash)) {
 			$attributes = [
 				'hash' => $hash,
 				'originalUrl' => $originalUrl
@@ -40,13 +37,13 @@ class UrlShortGeneratorService
 			if ($folder) {
 				$attributes['folder'] = $folder;
 			}
-			$this->repository->add(new HashedUrl($attributes));
+			HashedUrl::create($attributes);
 		}
-		return $this->hostName . ($folder ? "/${folder}" : "") . '/' . $hash;
+		return $this->buildUrl($this->hostName, $folder, $hash);
 	}
 
-	private function isHashStored(string $hash): bool
+	private function buildUrl(string $hostName, ?string $folder, string $hash): string
 	{
-		return $this->repository->findByHash($hash) !== null;
+		return $hostName . ($folder ? "/${folder}" : "") . '/' . $hash;
 	}
 }
