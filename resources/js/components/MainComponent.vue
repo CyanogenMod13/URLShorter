@@ -7,7 +7,7 @@
 			<div class="input-group">
 				<input class="form-control w-50" placeholder="Enter your link" v-model="formData.originalUrl">
 				<input class="form-control" placeholder="Enter your folder name" v-model="formData.folder">
-				<button class="btn btn-primary" @click="fetchLink">
+				<button :class="formData.originalUrl ? '' : 'disabled'" class="btn btn-primary" @click="fetchLink">
 					Get URL
 				</button>
 			</div>
@@ -33,7 +33,7 @@ export default {
 		fetchLink: function () {
 			if (!this.formData.originalUrl) return
 
-			if (this.formData.folder.length === 0)
+			if (this.formData.folder && this.formData.folder.length === 0)
 				delete this.formData['folder']
 
 			this.isLoading = true
@@ -50,7 +50,7 @@ export default {
 	data() {
 		return {
 			formData: {
-				originalUrl: null,
+				originalUrl: '',
 				folder: ''
 			},
 			shortUrl: null,
