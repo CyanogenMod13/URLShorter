@@ -8,7 +8,7 @@ use App\Exceptions\UrlUnsafeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShortUrlRequest;
 use App\Service\UrlShortGeneratorService;
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 
 class UrlShorterController extends Controller
 {
@@ -16,12 +16,12 @@ class UrlShorterController extends Controller
 		private UrlShortGeneratorService $generatorService
 	) {}
 
-	/**
-	 * @throws UrlUnsafeException
-	 * @throws GuzzleException
-	 */
-	public function generateShortUrl(ShortUrlRequest $request): array
+	public function generateShortUrl(ShortUrlRequest $request): JsonResponse|array
 	{
-		return ["shortUrl" => $this->generatorService->generateShortUrl($request->originalUrl, $request->folder)];
+		try {
+			return ["shortUrl" => $this->generatorService->generateShortUrl($request->originalUrl, $request->folder)];
+		} catch (UrlUnsafeException $e) {
+			return response()->json(['message' => $e->getMessage()], 400);
+		}
 	}
 }
