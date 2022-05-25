@@ -43,13 +43,5 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (UrlUnsafeException $urlUnsafeException, $request) {
-			return response()->json(['error' => 'The provided URL contains threatening content'], 400);
-		});
-
-		$this->renderable(function (Throwable $e, $request) {
-			return response()->json(['error' => 'Something went wrong'], 500);
-		});
-
 	}
 }
