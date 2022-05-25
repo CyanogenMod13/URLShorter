@@ -27,15 +27,13 @@
 </template>
 
 <script>
-import {isEmpty} from "lodash";
-
 export default {
 	name: "MainComponent",
 	methods: {
 		fetchLink: function () {
 			if (!this.formData.originalUrl) return
 
-			if (isEmpty(this.formData.folder))
+			if (this.formData.folder.length === 0)
 				delete this.formData['folder']
 
 			this.isLoading = true
@@ -53,7 +51,7 @@ export default {
 		return {
 			formData: {
 				originalUrl: null,
-				folder: null
+				folder: ''
 			},
 			shortUrl: null,
 			isLoading: false,
