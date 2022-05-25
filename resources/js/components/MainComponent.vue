@@ -27,24 +27,23 @@
 </template>
 
 <script>
+import {isEmpty} from "lodash";
+
 export default {
 	name: "MainComponent",
 	methods: {
 		fetchLink: function () {
 			if (!this.formData.originalUrl) return
 
-			for (let key in this.formData) {
-				if (!(this.formData[key] && this.formData[key].length > 0)) {
-					delete this.formData[key]
-				}
-			}
+			if (isEmpty(this.formData.folder))
+				delete this.formData['folder']
 
 			this.isLoading = true
 			axios.post('/api/generate-url', this.formData).then(response => {
 				this.shortUrl = response.data.shortUrl
 				this.isLoading = false
 			}).catch(reason => {
-				this.error = reason.response.data.error
+				this.error = reason.response.data.message
 				this.isLoading = false
 				this.shortUrl = null
 			})
