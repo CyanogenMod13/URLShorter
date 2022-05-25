@@ -10,11 +10,10 @@ use GuzzleHttp\RequestOptions;
 
 class CheckSafeUrlService
 {
-	private const GOOGLE_SAFE_API = "https://safebrowsing.googleapis.com/v4/threatMatches:find";
-
 	public function __construct(
 		private Client $client,
-		private string $apiKey
+		private string $apiKey,
+		private string $apiUrl
 	) {}
 
 	/**
@@ -33,7 +32,7 @@ class CheckSafeUrlService
 			]
 		];
 
-		$response = $this->client->post(self::GOOGLE_SAFE_API, [
+		$response = $this->client->post($this->apiUrl, [
 			RequestOptions::QUERY => [
 				'key' => $this->apiKey
 			],

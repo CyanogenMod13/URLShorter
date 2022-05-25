@@ -30,14 +30,7 @@ class UrlShortGeneratorService
 
 		$hash = $this->hashUrlService->hash($originalUrl . ($folder ?: ''));
 		if (!$this->repository->isHashExists($hash)) {
-			$attributes = [
-				'hash' => $hash,
-				'originalUrl' => $originalUrl
-			];
-			if ($folder) {
-				$attributes['folder'] = $folder;
-			}
-			HashedUrl::create($attributes);
+			HashedUrl::createHahsedUrl($originalUrl, $hash, $folder);
 		}
 		return $this->buildUrl($this->hostName, $folder, $hash);
 	}

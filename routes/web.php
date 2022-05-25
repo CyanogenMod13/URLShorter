@@ -17,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 	return view('main');
 });
+
+Route::get('/notfound', function () {
+	return view('notfound');
+});
+
 Route::get('/{param1}/{param2?}', [UrlRedirectController::class, 'index'])->middleware('hash.folder');

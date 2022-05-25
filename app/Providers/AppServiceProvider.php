@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(CheckSafeUrlService::class, function (Application $app) {
 			$config = $app['config']['services']['google_safe'];
-			return new CheckSafeUrlService(new Client(), $config['api_key']);
+			return new CheckSafeUrlService(new Client(), $config['api_key'], $config['api_url']);
 		});
 
 		$this->app->bind(UrlShortGeneratorService::class, function (Application $app) {

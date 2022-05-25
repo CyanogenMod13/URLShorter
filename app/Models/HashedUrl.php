@@ -17,4 +17,16 @@ class HashedUrl extends Model
 	protected $fillable = [
 		'hash', 'folder', 'originalUrl'
 	];
+
+	public static function createHahsedUrl(string $originalUrl, string $hash, ?string $folder = null): HashedUrl
+	{
+		$attributes = [
+			'hash' => $hash,
+			'originalUrl' => $originalUrl
+		];
+		if ($folder) {
+			$attributes['folder'] = $folder;
+		}
+		return self::create($attributes);
+	}
 }

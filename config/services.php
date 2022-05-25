@@ -32,6 +32,7 @@ return [
     ],
 
 	'google_safe' => [
-		'api_key' => env('GOOGLE_API_KEY')
+		'api_key' => env('GOOGLE_API_KEY'),
+		'api_url' => env('GOOGLE_SAFE_API')
 	]
 ];

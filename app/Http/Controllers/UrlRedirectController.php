@@ -18,6 +18,6 @@ class UrlRedirectController extends Controller
 		if ($hashedUrl && $hashedUrl->folder === $folder) {
 			return redirect($hashedUrl->originalUrl);
 		}
-		return redirect('/');
+		return redirect('/notfound');
 	}
 }
