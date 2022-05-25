@@ -17,7 +17,7 @@ class UrlShorterController extends Controller
 		private UrlShortGeneratorService $generatorService
 	) {}
 
-	public function generateShortUrl(ShortUrlRequest $request): JsonResponse|array
+	public function generateShortUrl(ShortUrlRequest $request): JsonResponse
 	{
 		try {
 			return response()->json([
